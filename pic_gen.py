@@ -26,7 +26,7 @@ def translate(img,l,theta):
 	img.show()
 	img.save('my1.png')
 
-def translation(img,l,theta,t,color):
+def translation(img,l,theta,t):
 	# a = 1
 	# b = 0
 	# c = 0 #left/right (i.e. 5/-5)
@@ -38,11 +38,12 @@ def translation(img,l,theta,t,color):
 	# img.save('my1.png')
 
 	# count=12
-	y = random.randrange(math.ceil(-1*(14-(l*math.sin(math.radians(theta)))/2)),math.floor(14-(l*math.sin(math.radians(theta)))/2),1)
-	x = random.randrange(math.ceil(-1*(14-(l*math.cos(math.radians(theta)))/2)),math.floor(14-(l*math.cos(math.radians(theta)))/2),1)
-	img_new = img.transform(img.size, Image.AFFINE, (1, 0, x, 0, 1, y))
+	y = random.randrange(math.ceil(-1*(14-(l*math.sin(math.radians(theta)))/2))+t,math.floor(14-(l*math.sin(math.radians(theta)))/2)-t,1)
+	x = random.randrange(math.ceil(-1*(14-(l*math.cos(math.radians(theta)))/2))+t,math.floor(14-(l*math.cos(math.radians(theta)))/2)-t,1)
+	img_new = img.transform(img.size, Image.AFFINE, (1, 0, -x, 0, 1, -y))
 	# img_new.save(str(l)+'_'+str(t)+'_'+str(theta)+'_'+str(color)+'_'+str(count)+'.jpg')
 	# img_new.show()
+	return(img_new)
 
 
 if __name__ == '__main__':
@@ -81,12 +82,25 @@ if __name__ == '__main__':
 						for p in range(14-(l//2),16+(l//2)): 
 							data[13,p] = val
 							data[15,p] = val
+
+					if j==0:
+						t=1
+					else:
+						t=3
 					img = Image.fromarray(data, 'RGB')
 					img = img.rotate(theta)
 					new_path = str(i)+'_'+str(j)+'_'+str(k)+'_'+str(o)
 					# os.mkdir(path+str(i)+'_'+str(j)+'_'+str(k)+'_'+str(o))
-					os.mkdir(path+new_path)
+					if not os.path.exists(path+new_path):
+    				# os.makedirs(directory)
+							os.mkdir(path+new_path)
 					img.save(path+new_path+'/'+str(i)+'_'+str(j)+'_'+str(k)+'_'+str(o)+'_1.jpg')
+					for count in range(1,1000):
+						img_new = translation(img,l,theta,t)
+						img_new.save(path+new_path+'/'+str(i)+'_'+str(j)+'_'+str(k)+'_'+str(o)+'_'+str(count+1)+'.jpg')
+
+					data = np.zeros((h, w, 3), dtype=np.uint8)
+
 
 
 
