@@ -57,7 +57,7 @@ print(len(image_list))
 # print(len(image_list[0][0]))
 # print(image_list[0][0][0])
 
-fps=10
+fps=2
 height, width, layers = (image_list[0].shape)
 size = (width,height)
 out = cv2.VideoWriter('video1.avi',cv2.VideoWriter_fourcc(*'DIVX'), fps, size)
